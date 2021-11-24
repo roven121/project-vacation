@@ -3,17 +3,17 @@ import { EditCardVacation } from "./EditCardVacation";
 import { RemoveCardVacation } from "./RemoveCardVacation";
 export interface Button {
   checkAdmin: boolean;
-  Id: number;
+  id: number;
 }
 export const RenderButtonsOfEditAndRemove = ({
   checkAdmin,
-  Description,
-  CheckOut,
-  CheckIn,
-  Price,
-  Destination,
-  Img,
-  Id,
+  description,
+  checkOut,
+  checkIn,
+  price,
+  destination,
+  img,
+  id,
 }: any) => {
 
   
@@ -22,17 +22,17 @@ export const RenderButtonsOfEditAndRemove = ({
       {checkAdmin ? (
         <div>
           <span>
-            <RemoveCardVacation id={Id} />
+            <RemoveCardVacation id={id} />
 
             <EditCardVacation
-              id={Id}
-              CheckIn={CheckIn}
-              CheckOut={CheckOut}
-              Description={Description}
-              Price={Price}
-              Destination={Destination}
+              id={id}
+              checkIn={checkIn}
+              checkOut={checkOut}
+              description={description}
+              price={price}
+              destination={destination}
               checkAdmin={checkAdmin}
-              Img={Img}
+              img={img}
             />
           </span>
         </div>

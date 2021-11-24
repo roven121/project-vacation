@@ -52,15 +52,15 @@ export const FetchVacations: React.FC<Partial<FetchVacation>> = ({
           appState.fetchVacations.map(
             (
               {
-                Description,
-                CheckIn,
-                CheckOut,
+                description,
+                checkIn,
+                checkOut,
                 follow,
-                Price,
-                Id,
-                Img,
+                price,
+                id,
+                img,
                 followId,
-                Destination,
+                destination,
                 isUserName,
               }: any,
               index: number
@@ -68,15 +68,15 @@ export const FetchVacations: React.FC<Partial<FetchVacation>> = ({
               <Grid item xs={2} sm={4} md={4} key={index}>
                 <Item>
                   <RenderCard
-                    Description={Description}
-                    CheckIn={CheckIn}
-                    CheckOut={CheckOut}
+                    description={description}
+                    checkIn={checkIn}
+                    checkOut={checkOut}
                     follow={follow}
-                    Price={Price}
-                    Id={Id}
-                    Img={Img}
+                    price={price}
+                    id={id}
+                    img={img}
                     followId={followId}
-                    Destination={Destination}
+                    destination={destination}
                     isUserName={userData?.userName}
                     checkAdmin={userData?.isAdministrator}
                   />

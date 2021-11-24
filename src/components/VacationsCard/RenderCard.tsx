@@ -7,20 +7,20 @@ import Typography from "@mui/material/Typography";
 
 import { FetchVacation } from "../../modals/VacationsModals/FetchVacation.modal";
 import moment from "moment";
-import { FowlersBtn } from "../FowlersBtn/FowlersBtn";
+import { FollowButton } from "../FollowButton/FollowButton";
 
 import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
 
 import { RenderButtonsOfEditAndRemove } from "../OptionsForAdmin/RenderButtonsOfEditAndRemove";
 export const RenderCard: React.FunctionComponent<FetchVacation> = ({
-  Description,
-  CheckOut,
-  Id,
-  CheckIn,
-  Price,
-  Destination,
-  Img,
+  description,
+  checkOut,
+  id,
+  checkIn,
+  price,
+  destination,
+  img,
   followId,
   follow,
   isUserName,
@@ -30,44 +30,36 @@ export const RenderCard: React.FunctionComponent<FetchVacation> = ({
     <Card>
       <CardHeader
         action={<IconButton aria-label="settings"></IconButton>}
-        title={`${Destination}`}
-        subheader={`start Date: ${moment(CheckIn).format(
+        title={<h2>{destination}</h2>}
+        subheader={`Check in: ${moment(checkIn).format(
           "DD/MM/YYYY"
-        )} To: ${moment(CheckOut).format("DD/MM/YYYY")}`}
+        )} To: ${moment(checkOut).format("DD/MM/YYYY")}`}
         avatar={
           <RenderButtonsOfEditAndRemove
-            Id={Id}
-            CheckIn={CheckIn}
-            CheckOut={CheckOut}
-            Description={Description}
-            Price={Price}
-            Destination={Destination}
+            id={id}
+            checkIn={checkIn}
+            checkOut={checkOut}
+            description={description}
+            price={price}
+            destination={destination}
             checkAdmin={checkAdmin}
-            Img={Img}
+            img={img}
           />
         }
       />
-      <CardMedia
-        component="img"
-        height="140"
-        image={Img}
-        alt="green iguana"
-      />
+      <CardMedia component="img" height="140" image={img} alt="green iguana" />
       <CardContent>
-        <Typography gutterBottom variant="h6" component="div">
-          Lizard
-        </Typography>
         <Typography variant="body2" color="text.secondary"></Typography>
         <Typography variant="h6" component="div" color="text.secondary">
-          Description:{Description}
+          description:{description}
           {<br />}
         </Typography>
-        <Typography color="text">Price:{Price}</Typography>
+        <Typography color="text">price:{price}</Typography>
         <Typography color="text">
           {isUserName && !checkAdmin ? (
-            <FowlersBtn
+            <FollowButton
               numberFowlers={follow}
-              Id={Id}
+              id={id}
               defaultFollow={followId > 0 ? false : true}
             />
           ) : null}

@@ -23,7 +23,12 @@ export const Navigator = () => {
             Vacations
             {userData?.isAdministrator ? (
               <Button component={Link} to="/charts" color="inherit">
-                charts
+                Charts
+              </Button>
+            ) : null}
+            {userData?.userName ? (
+              <Button component={Link} to="/vacations" color="inherit">
+               Vacations
               </Button>
             ) : null}
           </Typography>

@@ -2,37 +2,39 @@ import { FormUpdateVacation } from "../../modals/FormUpdateVacation/FormUpdateVa
 import instance from "../gateway";
 export interface EditVacation {
   isAdmin: boolean,
-  Description: string,
-  Price: number,
-  CheckIn: any,
-  CheckOut: any,
+  description: string,
+  price: number,
+  checkIn: any,
+  checkOut: any,
   id: number,
   jwt: string,
-  Img: string,
-  Destination: string
+  img: string,
+  destination: string
 }
 export const editVacation = async (
   isAdmin: boolean,
-  Description: string,
-  Price: number,
-  CheckIn: any,
-  CheckOut: any,
+  description: string,
+  price: number,
+  checkIn: any,
+  checkOut: any,
   id: number,
   jwt: string,
-  Img: string,
-  Destination: string
+  img: string,
+  destination: string
 ) => {
+  console.log({id},{id});
+  
   const data = await instance.put<FormUpdateVacation>(
     `/api/vacation/edit-vacation`,
     {
       isAdmin,
-      Description,
-      Price,
-      CheckIn,
-      CheckOut,
+      description,
+      price,
+      checkIn,
+      checkOut,
       id,
-      Img,
-      Destination,
+      img,
+      destination,
     },
    
   );

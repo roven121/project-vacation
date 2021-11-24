@@ -1,10 +1,10 @@
 export interface FormUpdateVacation {
-  Description: string;
-  Price: number;
-  CheckIn: any;
-  CheckOut: any;
+  description: string;
+  price: number;
+  checkIn: any;
+  checkOut: any;
   id?: number;
 
-  Img: string;
-  Destination: string;
+  img: string;
+  destination: string;
 }

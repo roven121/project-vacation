@@ -5,12 +5,12 @@ import { EditVacationByForm } from "../TempleteForm/EditVacationByForm";
 export const EditCardVacation = ({
   id,
   
-  Description,
-  CheckOut,
-  CheckIn,
-  Price,
-  Destination,
-  Img,
+  description,
+  checkOut,
+  checkIn,
+  price,
+  destination,
+  img,
 }: any) => {
   
   
@@ -21,12 +21,12 @@ export const EditCardVacation = ({
         comp={
           <EditVacationByForm
             id={id}
-            CheckIn={CheckIn}
-            CheckOut={CheckOut}
-            Description={Description}
-            Price={Price}
-            Destination={Destination}
-            Img={Img}
+            checkIn={checkIn}
+            checkOut={checkOut}
+            description={description}
+            price={price}
+            destination={destination}
+            img={img}
           />
         }
         text="edit Vacation"

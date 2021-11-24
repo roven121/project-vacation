@@ -1,10 +1,10 @@
 export interface CreateNewVacation {
   isAdministrator: boolean;
     jwt: string;
-    Description: string;
-    CheckIn: string;
-    CheckOut: string;
-    Price: number;
-    Img: string;
-    Destination:string
+    description: string;
+    checkIn: string;
+    checkOut: string;
+    price: number;
+    img: string;
+    destination:string
   }

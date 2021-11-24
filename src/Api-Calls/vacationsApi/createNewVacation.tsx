@@ -5,12 +5,12 @@ import { getItemLocalStorage } from "../../LocalStoragFuncation/getItemLocalStor
 export const createNewVacation = async (
   isAdministrator: boolean | number,
   jwt: string,
-  Description: string,
-  CheckIn: string,
-  CheckOut: string,
-  Price: number,
-  Img: string,
-  Destination: string
+  description: string,
+  checkIn: string,
+  checkOut: string,
+  price: number,
+  img: string,
+  destination: string
 ) => {
   try {
     const token = getItemLocalStorage("jwt");
@@ -19,12 +19,12 @@ export const createNewVacation = async (
       `/api/vacation/create-new-vacation`,
       {
         isAdministrator,
-        Description,
-        CheckIn,
-        CheckOut,
-        Price,
-        Img,
-        Destination,
+        description,
+        checkIn,
+        checkOut,
+        price,
+        img,
+        destination,
       },
       { headers: { Authorization: "Bearer " + token } }
     );

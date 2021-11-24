@@ -6,7 +6,7 @@ import { deleteUserNameFavoriteVacation } from "../../Api-Calls/vacationsApi/del
 import { updateFollow } from "../../Api-Calls/vacationsApi/updateFollow";
 import { StateContext } from "../Context/StateContext";
 
-export const FowlersBtn = ({ numberFowlers, Id, defaultFollow }: any) => {
+export const FollowButton = ({ numberFowlers, id, defaultFollow }: any) => {
   const { appState } = useContext(StateContext);
   const { userData} = appState;
 
@@ -15,8 +15,8 @@ export const FowlersBtn = ({ numberFowlers, Id, defaultFollow }: any) => {
 
   const [fowlers, setFowlers] = useState(numberFowlers);
 
-  const setNewFollow = async (Id: number, fowlers: number) => {
-    const result = await updateFollow(Id, fowlers);
+  const setNewFollow = async (id: number, fowlers: number) => {
+    const result = await updateFollow(id, fowlers);
     return result;
   };
   useEffect(() => {
@@ -30,17 +30,17 @@ export const FowlersBtn = ({ numberFowlers, Id, defaultFollow }: any) => {
 
         // this function check iff user already like this vacation
 
-        const result = await setNewFollow(Id, fowlers + 1); // setNewFollow set follow to the vacation
+        const result = await setNewFollow(id, fowlers + 1); // setNewFollow set follow to the vacation
         if (result) {
-          await createUserNameFavoriteVacation(userData?.userName, Id);
+          await createUserNameFavoriteVacation(userData?.userName, id);
 
           setFowlers((prev: number) => prev + 1);
           setActive(!active);
          
         }
       } else {
-        const result = await setNewFollow(Id, fowlers - 1); // setNewFollow Unset follow to the vacation
-        await deleteUserNameFavoriteVacation(Id, userData?.userName);
+        const result = await setNewFollow(id, fowlers - 1); // setNewFollow Unset follow to the vacation
+        await deleteUserNameFavoriteVacation(id, userData?.userName);
         setActive(true);
         
         if (result) {

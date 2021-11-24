@@ -3,9 +3,9 @@ import { useState } from "react";
 
 
 export interface TextField {
-  Destination: string;
-  Description: string;
-  Img: string;
+  destination: string;
+  description: string;
+  img: string;
 }
 export const useValidateError = () => {
   const [errors, setErrors] = useState<Partial<TextField>>({});
@@ -18,38 +18,38 @@ export const useValidateError = () => {
 
    
     switch (name) {
-      case "Destination":
+      case "destination":
         if ( !onlyLettersRegex.test(value) ||value.trim().length === 0) {
           setErrors({
             ...errors,
-            Destination: "Destination must Private ",
+            destination: "destination must Private ",
           });
         } else {
-          let newObj = omit(errors, "Destination");
+          let newObj = omit(errors, "destination");
           setErrors(newObj);
         }
         break;
 
-      case "Description":
+      case "description":
         if (value.trim().length === 0|| !onlyLettersRegex.test(value)) {
           setErrors({
             ...errors,
-            Description: "Description must Private ",
+            description: "description must Private ",
           });
         } else {
-          let newObj = omit(errors, "Description");
+          let newObj = omit(errors, "description");
           setErrors(newObj);
         }
 
         break;
-      case "Img":
+      case "img":
         if (!imgRegex.test(value)) {
           setErrors({
             ...errors,
-            Img: "url Img must contains  .png .jpg .img",
+            img: "url img must contains  .png .jpg .img",
           });
         } else {
-          let newObj = omit(errors, "Img");
+          let newObj = omit(errors, "img");
           setErrors(newObj);
         }
 

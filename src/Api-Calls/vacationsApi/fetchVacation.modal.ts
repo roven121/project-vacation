@@ -1,8 +1,8 @@
 export interface Vacation {
   id: number;
-  Description: string;
-  Price: number;
-  CheckIn: string;
-  CheckOut: string;
+  description: string;
+  price: number;
+  checkIn: string;
+  checkOut: string;
   Follow: number;
 }

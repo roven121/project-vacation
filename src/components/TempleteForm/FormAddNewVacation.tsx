@@ -19,12 +19,12 @@ export const FormAddNewVacation = () => {
   const { handleClose } = useContext(BtnModalShow);
 
   const detailFormUpdate: FormUpdateVacation = {
-    Destination: "",
-    Description: "",
-    CheckIn: new Date(),
-    CheckOut: new Date(),
-    Price: 0,
-    Img: "",
+    destination: "",
+    description: "",
+    checkIn: new Date(),
+    checkOut: new Date(),
+    price: 0,
+    img: "",
   };
   const { validate, errors } = useValidateError();
   const [values, setValues] = useState(detailFormUpdate);
@@ -62,22 +62,22 @@ export const FormAddNewVacation = () => {
         const { isAdministrator, jwt } = userData;
         
         
-        const { CheckIn, CheckOut, Description, Img, Price, Destination } =
+        const { checkIn, checkOut, description, img, price, destination } =
           values;
-        const startDateFormat = convertWithMoment(CheckIn);
-        const endDateFormat = convertWithMoment(CheckOut);
+        const startDateFormat = convertWithMoment(checkIn);
+        const endDateFormat = convertWithMoment(checkOut);
 
         if (isAdministrator && jwt) {
           const data = await createNewVacation(
             isAdministrator,
             jwt,
 
-            Description,
+            description,
             startDateFormat,
             endDateFormat,
-            Price,
-            Img,
-            Destination
+            price,
+            img,
+            destination
           );
           handleClose();
 
@@ -110,28 +110,28 @@ export const FormAddNewVacation = () => {
             <Grid item xs={2} md={4}>
               <TextField
                 required
-                label={"Enter Destination"}
-                name="Destination"
+                label={"Enter destination"}
+                name="destination"
                 type="text"
-                placeholder="Destination"
+                placeholder="destination"
                 onChange={(e) => handelChange(e)}
                 variant="standard"
-                value={values.Destination}
-                error={errors.Destination ? true : false}
-                helperText={errors.Destination ? `${errors.Destination}` : false}
+                value={values.destination}
+                error={errors.destination ? true : false}
+                helperText={errors.destination ? `${errors.destination}` : false}
               />
             </Grid>
             <Grid item xs={2} md={4}>
               <TextField
                 required
                 type="text"
-                label={"Enter Description"}
-                name="Description"
+                label={"Enter description"}
+                name="description"
                 variant="standard"
-                value={values.Description}
+                value={values.description}
                 onChange={handelChange}
-                error={errors.Description ? true : false}
-                helperText={errors.Description ? `${errors.Description}` : false}
+                error={errors.description ? true : false}
+                helperText={errors.description ? `${errors.description}` : false}
               />
             </Grid>
             <Grid item xs={2} md={4}>
@@ -139,43 +139,43 @@ export const FormAddNewVacation = () => {
                 dateFormat="dd/MM/yyyy"
                 name="startDate"
                 minDate={new Date()}
-                selected={values.CheckIn}
+                selected={values.checkIn}
                 onChange={(date: Date) =>
-                  setValues({ ...values, CheckIn: date })
+                  setValues({ ...values, checkIn: date })
                 }
               />
 
               <DatePicker
                 name="endDate"
                 minDate={initialDateFromTheNextDay}
-                selected={values.CheckOut}
+                selected={values.checkOut}
                 dateFormat="dd/MM/yyyy"
                 onChange={(date: Date) =>
-                  setValues({ ...values, CheckOut: date })
+                  setValues({ ...values, checkOut: date })
                 }
               />
             </Grid>
             <TextField
               required
-              name="Price"
-              label={"Insert Price"}
+              name="price"
+              label={"Insert price"}
               type="number"
-              placeholder="Price"
+              placeholder="price"
               variant="standard"
-              value={values.Price}
+              value={values.price}
               onChange={handelChange}
             />
 
             <TextField
-              name="Img"
+              name="img"
               type="text"
             
               onChange={handelChange}
               label={"Pick a Picture"}
               variant="standard"
-              value={values.Img}
-              error={errors.Img ? true : false}
-                helperText={errors.Img ? `${errors.Img}` : false}
+              value={values.img}
+              error={errors.img ? true : false}
+                helperText={errors.img ? `${errors.img}` : false}
             />
 
             <Button

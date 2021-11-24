@@ -85,15 +85,15 @@ const App: React.FC = () => {
               <Route path="/vacations">
                 <FetchVacations
                   isUserName={appState.userData?.userName}
-                  CheckIn={""}
-                  CheckOut={""}
-                  Description={""}
-                  Id={0}
-                  Img={""}
-                  Price={0}
+                  checkIn={""}
+                  checkOut={""}
+                  description={""}
+                  id={0}
+                  img={""}
+                  price={0}
                   follow={0}
                   followId={0}
-                  Destination={""}
+                  destination={""}
                 />
               </Route>
               <Route path="/charts">
