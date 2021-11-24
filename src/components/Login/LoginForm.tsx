@@ -1,102 +1,122 @@
-import React, { useState, useContext } from "react";
-import { Form, Button } from "react-bootstrap";
+import React, { useContext } from "react";
+import "./form.css";
 import { LoginUser } from "../../Api-Calls/login";
-import Spinner from "react-bootstrap/Spinner";
-import { RegisterConfig } from "../../Api-Calls/modals/RegisterConfig";
-import { validatorForm } from "../Register/valaitor";
-import { Link, useHistory } from "react-router-dom";
-import { JwtContext } from "../Context/JwtContext";
-import { RenderVacationsCard } from "../VacationsCard/RenderVacationsCard";
+import { Link } from "react-router-dom";
+import { useForm } from "../Hook/useForm";
+import { InputAdornment, TextField } from "@material-ui/core";
+import PasswordSharpIcon from "@mui/icons-material/PasswordSharp";
+import { setItemLocalStorage } from "../../LocalStoragFuncation/setItemLocalStorage";
+import { ValuesLogin } from "../../modals/LoginModal/ValuesLogin.modal";
+import { StateContext } from "../Context/StateContext";
+import { Paper, Grid, Avatar, Button, Typography } from "@material-ui/core";
+import LockOutlinedIcon from "@mui/icons-material/LockOutlined";
+import { AccountCircle } from "@mui/icons-material";
 
-export const LoginForm: React.FC = () => {
-  const detailsUser: RegisterConfig = {
-    userName: "",
+export const LoginForm: React.FC<ValuesLogin> = () => {
+  const { handelChange, errors, values } = useForm();
 
-    password: "",
-  };
-
-  const [user, setUser] = useState(detailsUser);
-  const [loading, setLoading] = useState(true);
-  const [auth, setAuth] = useState("");
-  const { Jwt, setJwt } = useContext(JwtContext);
-
-  const handelChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  };
+  const { setAppState, appState } = useContext(StateContext);
 
   const handelSubmit = async (e: any) => {
     e.preventDefault();
-    console.log({ user });
 
-    try {
-      const validation = validatorForm(user);
-      console.log(user);
-      if (validation) {
-        const results = await LoginUser(user.userName, user.password);
+    if (
+      Object.keys(errors).length === 0 &&
+      Object.keys(values).length !== 0 &&
+      values.userName.trim() !== "" &&
+      values.password.trim() !== ""
+    ) {
+      try {
+        const results = await LoginUser(values);
 
-        console.log(results.data);
-        const { jwt, userName, isAdministrator } = results.data;
-        console.log(isAdministrator, jwt, userName);
-        console.log(isAdministrator);
+        setItemLocalStorage("jwt", results.data.jwt);
+     
 
-        setAuth(jwt);
-        setJwt(jwt);
-        // setLoading(true);
+        setAppState({ ...appState, userData: results.data });
+      } catch (e: any) {
+        setAppState({
+          ...appState,
+          handelAlertError: "The user And password don't match",
+        });
       }
-    } catch (error) {
-      console.log(error);
     }
+
+    //
   };
+  const paperStyle = {
+    padding: 20,
+    height: "25rem",
+    width: "18rem",
+    margin: "20px auto",
+    background: "#aee0ff",
+  };
+  const btnStyle = { margin: "8px 0" };
+  const avatarStyle = { display: "inline-flex", backgroundColor: "blue" };
+  const { password, userName } = errors;
   return (
     <div>
-      {!auth ? (
-        <Form onSubmit={(e) => handelSubmit(e)}>
-          <Form.Group className="mb-3" controlId="formBasicEmail">
-            <Form.Label>User Name</Form.Label>
-            <Form.Control
+      <form onSubmit={handelSubmit}>
+        <Grid className="text-center">
+          <Paper elevation={8} style={paperStyle}>
+            <Grid className="text-center">
+              <Avatar style={avatarStyle}>
+                <LockOutlinedIcon />
+              </Avatar>
+              <h2>Sign In </h2>
+            </Grid>
+
+            <TextField
+              id="input-with-icon-textfield"
+              label={"Enter User Name"}
+              variant="standard"
               name="userName"
               type="text"
-              placeholder="Enter User Name"
-              onChange={(e) => handelChange(e)}
+              onChange={handelChange}
+              error={userName ? true : false}
+              helperText={userName ? `${userName}` : false}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <AccountCircle />
+                  </InputAdornment>
+                ),
+              }}
             />
-            <Form.Text className="text-muted">
-              We'll never share your email with anyone else.
-            </Form.Text>
-          </Form.Group>
 
-          <Form.Group className="mb-3" controlId="formBasicPassword">
-            <Form.Label>Password</Form.Label>
-            <Form.Control
+            <TextField
+              id="standard-basic"
+              label="password"
+              variant="standard"
               name="password"
               type="password"
-              placeholder="Password"
-              onChange={(e) => handelChange(e)}
+              onChange={handelChange}
+              error={password ? true : false}
+              helperText={password ? `${password}` : false}
+              InputProps={{
+                startAdornment: (
+                  <InputAdornment position="start">
+                    <PasswordSharpIcon />
+                  </InputAdornment>
+                ),
+              }}
             />
-          </Form.Group>
 
-          <Button variant="primary" type="submit">
-            Submit
-          </Button>
-          <span>
-            <Link to="/register-page">register</Link>
-          </span>
-        </Form>
-      ) : (
-        <HomeButton />
-      )}
+            <Button
+              type="submit"
+              color="primary"
+              variant="contained"
+              style={btnStyle}
+              fullWidth
+            >
+              Sign in
+            </Button>
+
+            <Typography>
+              You dont have Account ?<Link to="/register-page">register</Link>
+            </Typography>
+          </Paper>
+        </Grid>
+      </form>
     </div>
   );
 };
-
-function HomeButton() {
-  let history = useHistory();
-
-  function handleClick() {
-    history.push("/vacations");
-  }
-  handleClick();
-  return <></>;
-}

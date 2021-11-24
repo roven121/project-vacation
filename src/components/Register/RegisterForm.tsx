@@ -1,91 +1,124 @@
-import React, { useState } from "react";
-import { Button } from "react-bootstrap";
+import { useState } from "react";
 
-import Form from "react-bootstrap/Form";
-import { RegisterConfig } from "../../Api-Calls/modals/RegisterConfig";
+import { useHistory } from "react-router-dom";
+
 import { registerUser } from "../../Api-Calls/register";
-import { validatorForm } from "./valaitor";
 
+import { useForm, User } from "../Hook/useForm";
+
+import { Paper, Grid, Avatar, Button, TextField } from "@material-ui/core";
+import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
 export const RegisterForm = () => {
-  const detailsUser: RegisterConfig = {
+  const { errors, values, handelChange } = useForm();
+  const paperStyle = {
+    padding: 20,
+    width: "18rem",
+    margin: "20px auto",
+    height: "32rem",
+    background: "#aee0ff",
+  };
+  const btnStyle = { margin: "8px 0" };
+  const avatarStyle = { display: "inline-flex", backgroundColor: "blue" };
+
+  const [handelError, handelErrorSet] = useState<Partial<User>>({
     userName: "",
     firstName: "",
     lastName: "",
     password: "",
-  };
-  const [user, setUser] = useState(detailsUser);
+  });
 
-  const handelChange = (
-    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
-  ) => {
-    const { name, value } = e.target;
-    setUser({ ...user, [name]: value });
-  
+  let history = useHistory();
+  const redirect = () => {
+    history.push("/login-page");
   };
 
   const handelSubmit = async (e: any) => {
     e.preventDefault();
- 
-    const validated = validatorForm(user);
-    console.log(validated);
-
     try {
-      const sendUserDetails = await registerUser(user);
-      console.log(sendUserDetails);
+      if (
+        Object.keys(errors).length === 0 &&
+        Object.keys(values).length !== 0
+      ) {
+        handelErrorSet(errors);
+
+        await registerUser(values);
+
+        redirect();
+      } else {
+        handelErrorSet(errors);
+      }
     } catch (error) {
-      console.log(error);
+   
     }
   };
+  const { firstName, lastName, password, userName } = handelError;
+
 
   return (
-    <Form onSubmit={(e) => handelSubmit(e)}>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>User Name </Form.Label>
-        <Form.Control
-          name="userName"
-          type="text"
-          value={user.userName}
-          onChange={(e) => handelChange(e)}
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>First Name </Form.Label>
-        <Form.Control
-          name="firstName"
-          type="text"
-          value={user.firstName}
-          onChange={(e) => handelChange(e)}
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>Last Name </Form.Label>
-        <Form.Control
-          name="lastName"
-          type="text"
-          value={user.lastName}
-          onChange={(e) => handelChange(e)}
-        />
-      </Form.Group>
-      <Form.Group className="mb-3" controlId="exampleForm.ControlInput1">
-        <Form.Label>Password </Form.Label>
-        <Form.Control
-          name="password"
-          type="text"
-          value={user.password}
-          onChange={(e) => handelChange(e)}
-        />
-        <Button type="submit" variant="outline-danger">
-          Register
-        </Button>
-      </Form.Group>
-    </Form>
+    <form onSubmit={handelSubmit}>
+      <Grid className="text-center">
+        <Paper elevation={8} style={paperStyle}>
+          <Grid className="text-center">
+            <Avatar style={avatarStyle}>
+              <AccountBoxOutlinedIcon />{" "}
+            </Avatar>
+            <h2>Sign Up </h2>
+          </Grid>
+
+          <TextField
+            id="standard-basic"
+            label={"Enter User Name"}
+            variant="standard"
+            name="userName"
+            type="text"
+            onChange={handelChange}
+            error={userName ? true : false}
+            helperText={userName ? `${userName}` : false}
+          />
+
+          <TextField
+            id="standard-basic"
+            label="Enter First Name"
+            variant="standard"
+            name="firstName"
+            type="text"
+            onChange={handelChange}
+            error={firstName ? true : false}
+            helperText={firstName ? `${firstName}` : false}
+          />
+          <TextField
+            id="standard-basic"
+            label={"Enter last Name"}
+            variant="standard"
+            name="lastName"
+            type="text"
+            onChange={handelChange}
+            error={lastName ? true : false}
+            helperText={lastName ? `${lastName}` : false}
+          />
+
+          <TextField
+            id="standard-basic"
+            label="password"
+            variant="standard"
+            name="password"
+            type="password"
+            onChange={handelChange}
+            error={password ? true : false}
+            helperText={password ? `${password}` : false}
+          />
+
+          <Button
+            type="submit"
+            color="primary"
+            variant="contained"
+            style={btnStyle}
+            fullWidth
+          >
+            Creat my Account
+          </Button>
+        </Paper>
+      </Grid>
+    </form>
   );
 };
-// export interface StetRegister {
-//     Register: {
-//         UserName: string,
-//         firstName: string,
-//         lastName: string,
-//         password: string,
-//     }[];
-// }

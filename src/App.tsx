@@ -1,49 +1,117 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   BrowserRouter as Router,
   Switch,
   Route,
-  // Link,
-  // useParams,
+  Redirect,
 } from "react-router-dom";
 import "bootstrap/dist/css/bootstrap.min.css";
+import "./App.css";
 import { LoginForm } from "./components/Login/LoginForm";
+
+import { Navigator } from "./components/Navigator/Navigator";
+import { FetchVacations } from "./components/VacationsCard/FetchVacations";
+import "semantic-ui-css/semantic.min.css";
+
 import { RegisterForm } from "./components/Register/RegisterForm";
 
-import { Container, Row, Col } from "react-bootstrap";
+import { checkAndVerifyJwt } from "./Api-Calls/checkJwt";
+import { getItemLocalStorage } from "./LocalStoragFuncation/getItemLocalStorage";
+import { DataLogin } from "./modals/LoginModal/DataLogin.modal";
+import { AppState, StateContext } from "./components/Context/StateContext";
 
-import { Navigator } from "./components/welecomePage/navigator";
-import { RenderVacationsCard } from "./components/VacationsCard/RenderVacationsCard";
-import { JwtContext } from "./components/Context/JwtContext";
+import { Charts } from "./components/Charts/Charts";
+
+import { setItemLocalStorage } from "./LocalStoragFuncation/setItemLocalStorage";
+import { HandelAlertError } from "./components/Alert/HandelAlertError";
+import Container from "@mui/material/Container";
+import Box from "@mui/material/Box";
+
 
 const App: React.FC = () => {
-  const [Jwt, setJwt] = useState("");
-console.log(Jwt);
+  const jwt: string = getItemLocalStorage("jwt");
+
+
+  const [appState, setAppState] = useState<AppState>({
+    userData: null,
+    RegisterConfig: null,
+    fetchVacations: [],
+    createNewVacation: null,
+    handelAlertError: null,
+    addNewVacationBtn: null,
+    removeVacationBtn: null,
+  
+  });
+  useEffect(() => {
+    if (jwt) {
+      const verifyJwt = async () => {
+        const verifyJwt: any = await checkAndVerifyJwt(jwt);
+
+        if (verifyJwt) {
+          const result = verifyJwt.data;
+          const { isAdministrator, userName } = result?.tokenAfterDecoded;
+          const { jwt } = verifyJwt.data;
+          const results: DataLogin = { isAdministrator, userName, jwt };
+
+          setItemLocalStorage("jwt", jwt);
+          setAppState({ ...appState, userData: results });
+        }
+      };
+      verifyJwt();
+    }
+  }, []);
 
   return (
-    <JwtContext.Provider value={{ Jwt, setJwt: setJwt as any }}>
-      <Container>
-        <Router>
-          <Navigator />
-          <Switch>
-            <Route path="/login-page">
-              <LoginForm />
-            </Route>
+    <StateContext.Provider
+      value={{ appState, setAppState: setAppState as any }}
+    >
+      <Container fixed>
+        <Box>
+          <Router>
+            <Navigator />
 
-            <Route path="/register-page">
-              <RegisterForm />
-            </Route>
-            <Route path="/vacations">
-              <RenderVacationsCard />
-            </Route>
-          </Switch>
-        </Router>
+            {appState.handelAlertError && <HandelAlertError />}
+            <Switch>
+              <Route path="/login-page">
+                {!appState.userData ? (
+                  <LoginForm userName={""} password={""} />
+                ) : (
+                  <Redirect to="/vacations" />
+                )}
+              </Route>
+              <Route path="/register-page">
+                <RegisterForm />
+              </Route>
+              <Route path="/vacations">
+                <FetchVacations
+                  isUserName={appState.userData?.userName}
+                  CheckIn={""}
+                  CheckOut={""}
+                  Description={""}
+                  Id={0}
+                  Img={""}
+                  Price={0}
+                  follow={0}
+                  followId={0}
+                  Destination={""}
+                />
+              </Route>
+              <Route path="/charts">
+                <Charts />
+              </Route>
+              <Route path="*">
+                {appState.userData?.jwt ? (
+                  <Redirect to="/vacations" />
+                ) : (
+                  <Redirect to="/login-page" />
+                )}
+              </Route>
+            </Switch>
+          </Router>
+        </Box>
       </Container>
-    </JwtContext.Provider>
+    </StateContext.Provider>
   );
 };
 
 export default App;
-function setJwt(arg0: string) {
-  throw new Error("Function not implemented.");
-}
