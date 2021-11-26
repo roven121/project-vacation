@@ -17,18 +17,13 @@ export const Navigator = () => {
 
   return (
     <Box sx={{ flexGrow: 1 }}>
-      <AppBar style={{ backgroundColor: "#aee0ff" }} position="static">
+      <AppBar style={{ backgroundColor: "rgb(0 0 0 / 27%)" }} position="static">
         <Toolbar>
           <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
             Vacations
             {userData?.isAdministrator ? (
               <Button component={Link} to="/charts" color="inherit">
-                Charts
-              </Button>
-            ) : null}
-            {userData?.userName ? (
-              <Button component={Link} to="/vacations" color="inherit">
-               Vacations
+                charts
               </Button>
             ) : null}
           </Typography>

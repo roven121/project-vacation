@@ -66,7 +66,7 @@ export const FetchVacations: React.FC<Partial<FetchVacation>> = ({
               index: number
             ) => (
               <Grid item xs={2} sm={4} md={4} key={index}>
-                <Item>
+                <Item style={{ backgroundColor: "#bab8b8",}}>
                   <RenderCard
                     description={description}
                     checkIn={checkIn}
@@ -89,5 +89,5 @@ export const FetchVacations: React.FC<Partial<FetchVacation>> = ({
   );
 };
 const Item = styled(Paper)(({ theme }) => ({
-  background: "#bab8b8",
+  backgroundColor: "#bab8b8",
 }));

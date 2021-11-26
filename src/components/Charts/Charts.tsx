@@ -26,7 +26,7 @@ export const Charts = () => {
           
         }}
         data={{
-          labels:value.map(({idVacation}) => [`Id of the Vacation: ${idVacation}`]),
+          labels:value.map(({idVacation}) => [`id of the Vacation: ${idVacation}`]),
           datasets: [
             {
               label: "number of Follow",

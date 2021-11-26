@@ -1,15 +1,16 @@
+import { getItemLocalStorage } from "../../LocalStoragFuncation/getItemLocalStorage";
 import { FormUpdateVacation } from "../../modals/FormUpdateVacation/FormUpdateVacation.modal";
 import instance from "../gateway";
 export interface EditVacation {
-  isAdmin: boolean,
-  description: string,
-  price: number,
-  checkIn: any,
-  checkOut: any,
-  id: number,
-  jwt: string,
-  img: string,
-  destination: string
+  isAdmin: boolean;
+  description: string;
+  price: number;
+  checkIn: any;
+  checkOut: any;
+  id: number;
+  jwt: string;
+  img: string;
+  destination: string;
 }
 export const editVacation = async (
   isAdmin: boolean,
@@ -22,8 +23,7 @@ export const editVacation = async (
   img: string,
   destination: string
 ) => {
-  console.log({id},{id});
-  
+  const token = getItemLocalStorage("jwt");
   const data = await instance.put<FormUpdateVacation>(
     `/api/vacation/edit-vacation`,
     {
@@ -36,7 +36,7 @@ export const editVacation = async (
       img,
       destination,
     },
-   
+    { headers: { Authorization: "Bearer " + token } }
   );
 
   return data;

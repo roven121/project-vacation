@@ -24,13 +24,12 @@ import { Charts } from "./components/Charts/Charts";
 
 import { setItemLocalStorage } from "./LocalStoragFuncation/setItemLocalStorage";
 import { HandelAlertError } from "./components/Alert/HandelAlertError";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
 
+import Box from "@mui/material/Box";
+import { Container, Grid } from "semantic-ui-react";
 
 const App: React.FC = () => {
   const jwt: string = getItemLocalStorage("jwt");
-
 
   const [appState, setAppState] = useState<AppState>({
     userData: null,
@@ -40,7 +39,6 @@ const App: React.FC = () => {
     handelAlertError: null,
     addNewVacationBtn: null,
     removeVacationBtn: null,
-  
   });
   useEffect(() => {
     if (jwt) {
@@ -65,50 +63,51 @@ const App: React.FC = () => {
     <StateContext.Provider
       value={{ appState, setAppState: setAppState as any }}
     >
-      <Container fixed>
-        <Box>
-          <Router>
-            <Navigator />
+      <Container>
+      <Box>
+        
+        <Router>
+          <Navigator />
 
-            {appState.handelAlertError && <HandelAlertError />}
-            <Switch>
-              <Route path="/login-page">
-                {!appState.userData ? (
-                  <LoginForm userName={""} password={""} />
-                ) : (
-                  <Redirect to="/vacations" />
-                )}
-              </Route>
-              <Route path="/register-page">
-                <RegisterForm />
-              </Route>
-              <Route path="/vacations">
-                <FetchVacations
-                  isUserName={appState.userData?.userName}
-                  checkIn={""}
-                  checkOut={""}
-                  description={""}
-                  id={0}
-                  img={""}
-                  price={0}
-                  follow={0}
-                  followId={0}
-                  destination={""}
-                />
-              </Route>
-              <Route path="/charts">
-                <Charts />
-              </Route>
-              <Route path="*">
-                {appState.userData?.jwt ? (
-                  <Redirect to="/vacations" />
-                ) : (
-                  <Redirect to="/login-page" />
-                )}
-              </Route>
-            </Switch>
-          </Router>
-        </Box>
+          {appState.handelAlertError && <HandelAlertError />}
+          <Switch>
+            <Route path="/login-page">
+              {!appState.userData ? (
+                <LoginForm userName={""} password={""} />
+              ) : (
+                <Redirect to="/vacations" />
+              )}
+            </Route>
+            <Route path="/register-page">
+              <RegisterForm />
+            </Route>
+            <Route path="/vacations">
+              <FetchVacations
+                isUserName={appState.userData?.userName}
+                checkIn={""}
+                checkOut={""}
+                description={""}
+                id={0}
+                img={""}
+                price={0}
+                follow={0}
+                followId={0}
+                destination={""}
+              />
+            </Route>
+            <Route path="/charts">
+              <Charts />
+            </Route>
+            <Route path="*">
+              {appState.userData?.jwt ? (
+                <Redirect to="/vacations" />
+              ) : (
+                <Redirect to="/login-page" />
+              )}
+            </Route>
+          </Switch>
+        </Router>
+      </Box>
       </Container>
     </StateContext.Provider>
   );

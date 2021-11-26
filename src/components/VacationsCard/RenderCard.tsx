@@ -7,7 +7,7 @@ import Typography from "@mui/material/Typography";
 
 import { FetchVacation } from "../../modals/VacationsModals/FetchVacation.modal";
 import moment from "moment";
-import { FollowButton } from "../FollowButton/FollowButton";
+import { FowlersBtn } from "../FowlersBtn/FowlersBtn";
 
 import CardHeader from "@mui/material/CardHeader";
 import IconButton from "@mui/material/IconButton";
@@ -30,8 +30,8 @@ export const RenderCard: React.FunctionComponent<FetchVacation> = ({
     <Card>
       <CardHeader
         action={<IconButton aria-label="settings"></IconButton>}
-        title={<h2>{destination}</h2>}
-        subheader={`Check in: ${moment(checkIn).format(
+        title={`${destination}`}
+        subheader={`start Date: ${moment(checkIn).format(
           "DD/MM/YYYY"
         )} To: ${moment(checkOut).format("DD/MM/YYYY")}`}
         avatar={
@@ -47,8 +47,16 @@ export const RenderCard: React.FunctionComponent<FetchVacation> = ({
           />
         }
       />
-      <CardMedia component="img" height="140" image={img} alt="green iguana" />
+      <CardMedia
+        component="img"
+        height="140"
+        image={img}
+        alt="green iguana"
+      />
       <CardContent>
+        <Typography gutterBottom variant="h6" component="div">
+          Lizard
+        </Typography>
         <Typography variant="body2" color="text.secondary"></Typography>
         <Typography variant="h6" component="div" color="text.secondary">
           description:{description}
@@ -57,7 +65,7 @@ export const RenderCard: React.FunctionComponent<FetchVacation> = ({
         <Typography color="text">price:{price}</Typography>
         <Typography color="text">
           {isUserName && !checkAdmin ? (
-            <FollowButton
+            <FowlersBtn
               numberFowlers={follow}
               id={id}
               defaultFollow={followId > 0 ? false : true}
