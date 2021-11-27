@@ -30,7 +30,7 @@ export const RenderCard: React.FunctionComponent<FetchVacation> = ({
     <Card>
       <CardHeader
         action={<IconButton aria-label="settings"></IconButton>}
-        title={`${destination}`}
+        title={<h2>{destination}</h2>}
         subheader={`start Date: ${moment(checkIn).format(
           "DD/MM/YYYY"
         )} To: ${moment(checkOut).format("DD/MM/YYYY")}`}
@@ -47,22 +47,13 @@ export const RenderCard: React.FunctionComponent<FetchVacation> = ({
           />
         }
       />
-      <CardMedia
-        component="img"
-        height="140"
-        image={img}
-        alt="green iguana"
-      />
+      <CardMedia component="img" height="140" image={img} alt="green iguana" />
       <CardContent>
-        <Typography gutterBottom variant="h6" component="div">
-          Lizard
-        </Typography>
-        <Typography variant="body2" color="text.secondary"></Typography>
         <Typography variant="h6" component="div" color="text.secondary">
           description:{description}
           {<br />}
         </Typography>
-        <Typography color="text">price:{price}</Typography>
+        <Typography variant="h5" component="div" color="text.secondary" >price:{price}$</Typography>
         <Typography color="text">
           {isUserName && !checkAdmin ? (
             <FowlersBtn

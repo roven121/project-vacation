@@ -1,7 +1,7 @@
 const { db } = require("../../db/db");
 
 const editVacation = async (description, price, checkIn, checkOut, id, img) => {
-    console.log({description, price, checkIn, checkOut, id, img});
+   
     try {
         const [{ affectedRows }] = await db.query(
             `UPDATE vacation SET description = ?, price = ?, checkIn = ?, checkOut = ? , img = ? WHERE (id = ?)`,
@@ -12,7 +12,7 @@ const editVacation = async (description, price, checkIn, checkOut, id, img) => {
 
         return affectedRows, result;
     } catch (error) {
-        console.log(error);
+   
         return [null,null]
     }
 };

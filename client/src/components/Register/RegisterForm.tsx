@@ -1,14 +1,17 @@
-import { useState } from "react";
+import { useContext, useState } from "react";
 
 import { useHistory } from "react-router-dom";
 
 import { registerUser } from "../../Api-Calls/register";
 
-import { useForm, User } from "../Hook/useForm";
+import { useForm } from "../Hook/useForm";
 
 import { Paper, Grid, Avatar, Button, TextField } from "@material-ui/core";
 import AccountBoxOutlinedIcon from "@mui/icons-material/AccountBoxOutlined";
+import { StateContext } from "../Context/StateContext";
+import { setItemLocalStorage } from "../../LocalStoragFuncation/setItemLocalStorage";
 export const RegisterForm = () => {
+  const { setAppState, appState } = useContext(StateContext);
   const { errors, values, handelChange } = useForm();
   const paperStyle = {
     padding: 20,
@@ -20,16 +23,9 @@ export const RegisterForm = () => {
   const btnStyle = { margin: "8px 0" };
   const avatarStyle = { display: "inline-flex", backgroundColor: "blue" };
 
-  const [handelError, handelErrorSet] = useState<Partial<User>>({
-    userName: "",
-    firstName: "",
-    lastName: "",
-    password: "",
-  });
-
   let history = useHistory();
   const redirect = () => {
-    history.push("/login-page");
+    history.push("/vacations");
   };
 
   const handelSubmit = async (e: any) => {
@@ -37,22 +33,32 @@ export const RegisterForm = () => {
     try {
       if (
         Object.keys(errors).length === 0 &&
-        Object.keys(values).length !== 0
+        Object.keys(values).length !== 0 &&
+        values.userName.trim() !== "" &&
+        values.password.trim() !== ""
       ) {
-        handelErrorSet(errors);
+        const result:any = await registerUser(values);
 
-        await registerUser(values);
+        setItemLocalStorage("jwt", result.data.jwt);
 
+        setAppState({ ...appState, userData: result.data });
+        console.log(appState.userData);
+        
         redirect();
       } else {
-        handelErrorSet(errors);
+        setAppState({
+          ...appState,
+          handelAlertError: "All field must completed",
+        });
       }
     } catch (error) {
-   
+      setAppState({
+        ...appState,
+        handelAlertError: "The user is already exists",
+      });
     }
   };
-  const { firstName, lastName, password, userName } = handelError;
-
+  const { firstName, lastName, password, userName } = errors;
 
   return (
     <form onSubmit={handelSubmit}>

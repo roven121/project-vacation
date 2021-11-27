@@ -19,26 +19,29 @@ export const LoginForm: React.FC<ValuesLogin> = () => {
 
   const handelSubmit = async (e: any) => {
     e.preventDefault();
-
-    if (
-      Object.keys(errors).length === 0 &&
-      Object.keys(values).length !== 0 &&
-      values.userName.trim() !== "" &&
-      values.password.trim() !== ""
-    ) {
-      try {
+    try {
+      if (
+        Object.keys(errors).length === 0 &&
+        Object.keys(values).length !== 0 &&
+        values.userName.trim() !== "" &&
+        values.password.trim() !== ""
+      ) {
         const results = await LoginUser(values);
 
         setItemLocalStorage("jwt", results.data.jwt);
-     
 
         setAppState({ ...appState, userData: results.data });
-      } catch (e: any) {
+      } else {
         setAppState({
           ...appState,
-          handelAlertError: "The user And password don't match",
+          handelAlertError: "All field must completed",
         });
       }
+    } catch (e: any) {
+      setAppState({
+        ...appState,
+        handelAlertError: "The user And password don't match",
+      });
     }
 
     //

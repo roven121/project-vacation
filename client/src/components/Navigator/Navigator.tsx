@@ -14,6 +14,7 @@ export const Navigator = () => {
   const { appState } = React.useContext(StateContext);
   const { userData } = appState;
   const { logOutHandel } = useLogOut();
+  console.log(userData?.isAdministrator);
 
   return (
     <Box sx={{ flexGrow: 1 }}>

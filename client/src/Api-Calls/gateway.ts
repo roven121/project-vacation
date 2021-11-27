@@ -2,12 +2,12 @@ import axios from 'axios';
 
 import { getItemLocalStorage } from '../LocalStoragFuncation/getItemLocalStorage';
 const token = getItemLocalStorage('jwt');
-
+//window.location.origin||
 const options = {
-  baseURL: window.location.origin,
+  baseURL: "http://localhost:5000",
   headers: { Authorization: 'Bearer ' + token },
 };
-console.log("🚀 ~ file: gateway.ts ~ line 10 ~ options", options)
+
 
 const instance = axios.create(options);
 

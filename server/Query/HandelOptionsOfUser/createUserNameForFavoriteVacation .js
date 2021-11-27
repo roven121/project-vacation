@@ -10,7 +10,7 @@ const createUserNameFavoriteVacation = async (idVacation, userName) => {
 
     return result;
   } catch (error) {
-    console.log(error);
+   return [null,null]
   }
 };
 
@@ -21,12 +21,12 @@ const checkFavoriteNotDuplicate = async (idVacation, userName) => {
       `SELECT * FROM followers where idVacation=? and userName=?`,
       [idVacation, userName]
     );
-    console.log(result.length <0);
+    
     const checkResult = result.length >0 ? false : true;
    
     return checkResult;
   } catch (error) {
-    console.log(error);
+   return []
   }
 };
 module.exports = { checkFavoriteNotDuplicate, createUserNameFavoriteVacation };

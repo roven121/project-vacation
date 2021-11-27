@@ -27,23 +27,27 @@ const { loginQuery } = require("../Query/LoginAndRegisterOptions/loginQuery");
 Route.get("/auth", async (req, res) => {
   const token = req.header("authorization").split(" ")[1];
 
-  console.log({ token });
+  
   const tokenAfterDecoded = await handelDecodeJwt(token, JWT_Secret);
-  console.log({ tokenAfterDecoded });
  
-  const jwt = await createJwt(tokenAfterDecoded.userName, tokenAfterDecoded.isAdministrator ? true : false);
+
+  const jwt = await createJwt(
+    tokenAfterDecoded.userName,
+    tokenAfterDecoded.isAdministrator ? true : false
+  );
   res.send({ tokenAfterDecoded, jwt });
 });
 
 Route.post("/register", async (req, res) => {
   const { userName, firstName, lastName, password } = req.body;
-  console.log(req.body);
+ 
   if (!userName || !firstName || !lastName || !password)
     return res.status(401).send("all field must required");
 
   const encryptedUserPassword = await bcrypt.hash(password, salt);
-  console.log({ encryptedUserPassword });
+ 
   const [user] = await loginQuery(userName);
+
   if (user)
     return res.status(404).send({ user: "is already exists in the system" });
   const result = await registerNewUser(
@@ -52,20 +56,22 @@ Route.post("/register", async (req, res) => {
     lastName,
     encryptedUserPassword
   );
-
-  res.send({ result });
+  if (result) {
+    const jwt = await createJwt(userName, false);
+    res.status(200).send({ jwt, userName, isAdministrator: false });
+  }
 });
 
 Route.post("/login", async (req, res) => {
   const { userName, password } = req.body;
-  console.log(userName);
+ 
   try {
     if (!userName || !password)
       return res.status(401).send("all field must required");
 
     const [user] = await loginQuery(userName);
     const isAdministrator = user.isAdmin;
-    console.log(isAdministrator);
+  
 
     const passwordIsCorrect = await bcrypt.compare(password, user.password);
     const jwt = await createJwt(userName, isAdministrator ? true : false);

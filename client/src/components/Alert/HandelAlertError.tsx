@@ -2,6 +2,7 @@ import * as React from "react";
 import Alert from "@mui/material/Alert";
 
 import { StateContext } from "../Context/StateContext";
+import { Stack } from "@mui/material";
 
 export const HandelAlertError = () => {
   const { appState, setAppState } = React.useContext(StateContext);
@@ -9,13 +10,13 @@ export const HandelAlertError = () => {
   React.useEffect(() => {
     setTimeout(() => {
       setAppState({ ...appState, handelAlertError: null });
-    }, 3000);
+    }, 4000);
   }, [handelAlertError]);
   return (
-   
-      <Alert  severity="error">
+    <Stack sx={{ width: "100%" }} spacing={2}>
+      <Alert style={{backgroundColor: "#d32f2f",color: "#fff"}} variant="filled" severity="error">
         {handelAlertError}
       </Alert>
-  
+    </Stack>
   );
 };

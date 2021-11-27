@@ -26,7 +26,7 @@ import { setItemLocalStorage } from "./LocalStoragFuncation/setItemLocalStorage"
 import { HandelAlertError } from "./components/Alert/HandelAlertError";
 
 import Box from "@mui/material/Box";
-import { Container, Grid } from "semantic-ui-react";
+import { Container } from "semantic-ui-react";
 
 const App: React.FC = () => {
   const jwt: string = getItemLocalStorage("jwt");
@@ -64,50 +64,51 @@ const App: React.FC = () => {
       value={{ appState, setAppState: setAppState as any }}
     >
       <Container>
-      <Box>
-        
-        <Router>
-          <Navigator />
+        <Box>
+          <Router>
+            <Navigator />
 
-          {appState.handelAlertError && <HandelAlertError />}
-          <Switch>
-            <Route path="/login-page">
-              {!appState.userData ? (
-                <LoginForm userName={""} password={""} />
-              ) : (
-                <Redirect to="/vacations" />
+            {appState.handelAlertError && <HandelAlertError />}
+            <Switch>
+              <Route path="/login-page">
+                {!appState.userData ? (
+                  <LoginForm userName={""} password={""} />
+                ) : (
+                  <Redirect to="/vacations" />
+                )}
+              </Route>
+              <Route path="/register-page">
+                <RegisterForm />
+              </Route>
+              <Route path="/vacations">
+                <FetchVacations
+                  isUserName={appState.userData?.userName}
+                  checkIn={""}
+                  checkOut={""}
+                  description={""}
+                  id={0}
+                  img={""}
+                  price={0}
+                  follow={0}
+                  followId={0}
+                  destination={""}
+                />
+              </Route>
+              {appState.userData?.isAdministrator && (
+                <Route path="/charts">
+                  <Charts />
+                </Route>
               )}
-            </Route>
-            <Route path="/register-page">
-              <RegisterForm />
-            </Route>
-            <Route path="/vacations">
-              <FetchVacations
-                isUserName={appState.userData?.userName}
-                checkIn={""}
-                checkOut={""}
-                description={""}
-                id={0}
-                img={""}
-                price={0}
-                follow={0}
-                followId={0}
-                destination={""}
-              />
-            </Route>
-            <Route path="/charts">
-              <Charts />
-            </Route>
-            <Route path="*">
-              {appState.userData?.jwt ? (
-                <Redirect to="/vacations" />
-              ) : (
-                <Redirect to="/login-page" />
-              )}
-            </Route>
-          </Switch>
-        </Router>
-      </Box>
+              <Route path="*">
+                {appState.userData?.jwt ? (
+                  <Redirect to="/vacations" />
+                ) : (
+                  <Redirect to="/login-page" />
+                )}
+              </Route>
+            </Switch>
+          </Router>
+        </Box>
       </Container>
     </StateContext.Provider>
   );

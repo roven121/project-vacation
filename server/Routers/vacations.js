@@ -28,12 +28,9 @@ const {
   getAllVacationsExceptEspeciallyUser,
 } = require("../Query/HandelOptionsOfUser/getAllVacationsExceptEspeciallyUser");
 const { setNewFollow } = require("../Query/HandelOptionsOfUser/setNewFollow");
-console.log(
-  "🚀 ~ file: vacations.js ~ line 30 PRE ~ chartVacation",
-  "pre chartVacation"
-);
+
 const { chartVacation } = require("../Query/chartVacation");
-// console.log("🚀 ~ file: vacations.js ~ line 32 POST ~ chartVacation", chartVacation)
+
 const Route = Router();
 const JWT_Secret = "Rouven";
 const verifyJwtMiddleware = expressJwt({
@@ -49,7 +46,7 @@ Route.use(
 Route.post("/create-new-vacation", checkValidateAdmin, async (req, res) => {
   const { description, price, checkIn, checkOut, img, destination } = req.body;
 
-  console.log({ description, price, checkIn, checkOut, img, destination });
+
   if (!description || !price || !checkIn || !checkOut || !img || !destination)
     return res.status(403).send("you must prevent all fields !!!");
   const result = await createNewVacation(
@@ -71,7 +68,7 @@ Route.delete("/delete-vacation/:id", async (req, res) => {
   if (!idIsNumber) return res.status(404).send("id is not a number");
   await deleteFollowVacationById(id);
   const result = await deleteVacation(id);
-  console.log(result);
+
   if (!result) return res.status(400).send({ successes: result });
   res.status(200).send(`delete was succeeded`);
 });
@@ -79,15 +76,7 @@ Route.delete("/delete-vacation/:id", async (req, res) => {
 Route.put("/edit-vacation", checkValidateAdmin, async (req, res) => {
   const { description, price, checkIn, checkOut, id, img, destination } =
     req.body;
-  console.log("222", {
-    description,
-    price,
-    checkIn,
-    checkOut,
-    id,
-    img,
-    destination,
-  });
+
   try {
     if (!description || !price || !checkIn || !checkOut || !id || !destination)
       return res.status(403).send("field as missing ");
@@ -103,28 +92,24 @@ Route.put("/edit-vacation", checkValidateAdmin, async (req, res) => {
 
     if (!result) return res.status(400).send({ successes: result });
     res.status(200).send(`update  was succeeded`);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 });
 Route.post("/set-new-follow", async (req, res) => {
   const { follow, id } = req.body;
-  console.log({ follow, Id: id });
+
   try {
     if (!id) return res.status(403).send("field is missing ");
     const result = await setNewFollow(follow, id);
 
     if (!result) return res.status(400).send({ successes: result });
     res.status(200).send(result);
-  } catch (e) {
-    console.log(e);
-  }
+  } catch (e) {}
 });
 
 Route.post("/add-new-favorite-vacation", async (req, res) => {
   try {
     const { idVacation, userName } = req.body;
-    console.log({ idVacation, userName });
+
     if (!userName || !idVacation)
       return res.status(401).send("field as missing ");
     const checkVacation = await checkFavoriteNotDuplicate(idVacation, userName);
@@ -140,7 +125,7 @@ Route.post("/add-new-favorite-vacation", async (req, res) => {
       return res.status(401).send({ successes: false });
     }
   } catch (error) {
-    console.log({ error });
+    res.status(404);
   }
 });
 
@@ -158,7 +143,7 @@ Route.delete("/delete-favorite-vacation", async (req, res) => {
 
     return res.status(200).send("deleted was successes");
   } catch (error) {
-    console.log({ error });
+    res.status(404);
   }
 });
 
@@ -172,7 +157,7 @@ Route.post("/get-All-Vacation-especially-user", async (req, res) => {
 
     res.send(results);
   } catch (error) {
-    console.log({ error });
+    res.status(404);
   }
 });
 

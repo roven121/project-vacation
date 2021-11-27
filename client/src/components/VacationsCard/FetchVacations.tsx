@@ -31,8 +31,13 @@ export const FetchVacations: React.FC<Partial<FetchVacation>> = ({
 
   useEffect(() => {
     fetchVacations();
-    console.log({ removeVacationBtn });
-  }, [isUserName, !addNewVacationBtn, !removeVacationBtn, token,removeVacationBtn]);
+  }, [
+    isUserName,
+    !addNewVacationBtn,
+    !removeVacationBtn,
+    token,
+    removeVacationBtn,
+  ]);
 
   return (
     <Box sx={{ flexGrow: 1 }}>
