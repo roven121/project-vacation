@@ -1,18 +1,12 @@
 const mysql = require("mysql2/promise");
-// mysql://bd102b4303fe9c:27fdf684@eu-cdbr-west-01.cleardb.com/heroku_a3346fc59d98016?reconnect=true
-// const sqlSettings = {
-//   host: "localhost",
-//   port: "3306",
-//   user: "root",
-//   password: "123123123",
-//   database: "vacation",
-// };
+
 const sqlSettings = {
-  host: "eu-cdbr-west-01.cleardb.com",
+  host: "us-cdbr-east-04.cleardb.com",
   port: "3306",
-  user: "bd102b4303fe9c",
-  password: "27fdf684",
-  database: "heroku_a3346fc59d98016",
+  user: "bb372344ccb5f0",
+  password: "4461bb12",
+  database: "heroku_9a97d2b4e7c93a2",
+  reconnect: true
 };
 
 
